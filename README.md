@@ -21,6 +21,7 @@ yarn dev
 * [Node](https://nodejs.org/en/) - Node.js® is a JavaScript runtime built on Chrome's V8 JavaScript engine.
 * [Express](https://expressjs.com/) - Fast, unopinionated, minimalist web framework for Node.js
 * [Nodemon](https://nodemon.io/) - Nodemon is a utility that will monitor for any changes in your source and automatically restart your server
+* **Insôminia** - Open Source REST Client
 
 
 ## Author
