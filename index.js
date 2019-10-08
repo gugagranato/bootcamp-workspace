@@ -10,19 +10,42 @@ server.use(express.json())
 
 const users = ["Guga", "Lorena", "Hércules"];
 
+server.use((req, res, next) => {
+  console.time('Request');
+  console.log(`O Método chamado é: ${req.method}; e a Url é: ${req.url}`)
+  
+  next();
+  console.timeEnd('Request');
+})
+
+const checkUserExist = (req, res, next) => {
+  if(!req.body.name) {
+    return res.status(400).json({ error: 'User name is required'});
+  } 
+    return next();
+}
+
+const chekUserIntoArray = (req, res, next) => {
+  const { index } = req.params
+  if(!users[index]) {
+    return res.status(400).json({ error: 'User not existe into array'})
+  }
+  return next();
+}
+
 server.get('/users', (req, res) => {
   return res.json(users);
 })
 
 
-server.get('/users/:index', (req, res) => {
+server.get('/users/:index', chekUserIntoArray, (req, res) => {
   const {index} = req.params;
 
   res.json(users[index])
 })
 
 // Criação do usuário
-server.post('/users', (req, res) => {
+server.post('/users', checkUserExist,  (req, res) => {
   const { name } = req.body;
 
   users.push(name)
@@ -30,7 +53,7 @@ server.post('/users', (req, res) => {
   return res.json(users)
 })
 // Atualizar um usuário
-server.put('/users/:index', (req, res) => {
+server.put('/users/:index', checkUserExist, chekUserIntoArray, (req, res) => {
   const {index} = req.params;
   const { name } = req.body;
 
@@ -40,7 +63,7 @@ server.put('/users/:index', (req, res) => {
 })
 
 // Deletar um usuário
-server.delete('/users/:index', (req, res) => {
+server.delete('/users/:index', chekUserIntoArray, (req, res) => {
   const { index } = req.params;
 
   users.splice(index, 1);
